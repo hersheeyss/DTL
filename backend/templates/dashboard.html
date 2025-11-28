@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+
+    <!-- Simple styling -->
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #1e3a8a;
+            color: white;
+            padding: 15px 25px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #163273;
+        }
+
+        .info-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        Student Election Dashboard
+    </div>
+
+    <div class="container">
+
+        <!-- Welcome Card -->
+        <div class="card">
+            <h2>Welcome, {{ username }}</h2>
+            <p class="info-text">You are logged into the secure voting portal.</p>
+        </div>
+
+        <!-- Vote Card -->
+        <div class="card">
+            <h3>Cast Your Vote</h3>
+            <p class="info-text">
+                Your vote is anonymous and will be verified through blockchain.
+            </p>
+            <a href="/vote" class="btn">Go to Voting Page</a>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card">
+            <h3>View Results</h3>
+            <p class="info-text">
+                Live results will be displayed once voting ends.
+            </p>
+            <a href="/results" class="btn">View Results</a>
+        </div>
+
+        <!-- Logout -->
+        <div class="card">
+            <h3>Logout</h3>
+            <a href="/logout" class="btn">Logout</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
