@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+
+<body>
+
+    <div class="navbar">
+        Student Election Dashboard
+    </div>
+
+    <div class="container">
+
+        <!-- Welcome Card -->
+        <div class="card">
+            <h2>Welcome, {{ username }}</h2>
+            <p class="info-text">You are logged into the secure voting portal.</p>
+        </div>
+
+        <!-- Vote Card -->
+        <div class="card">
+            <h3>Cast Your Vote</h3>
+            <p class="info-text">
+                Your vote is anonymous and will be verified through blockchain.
+            </p>
+            <a href="/vote" class="btn">Go to Voting Page</a>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card">
+            <h3>View Results</h3>
+            <p class="info-text">
+                Live results will be displayed once voting ends.
+            </p>
