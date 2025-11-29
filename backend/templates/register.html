@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register — Student Election</title>
+
+    <!-- Correct Flask static path -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+</head>
+<body>
+
+    <div class="navbar">Student Election — Register</div>
+
+    <main class="container">
+        <div class="card">
+            <h2>Create your account</h2>
+
+            <form id="registerForm" action="/register" method="POST" novalidate>
+
+                <label for="full_name">Full Name</label>
+                <input id="full_name" name="full_name" type="text" required>
+
+                <label for="student_id">Student ID</label>
+                <input id="student_id" name="student_id" type="text" required>
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required>
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" minlength="8" required>
+
+                <label for="confirm_password">Confirm Password</label>
+                <input id="confirm_password" name="confirm_password" type="password" minlength="8" required>
+
+                <label for="eth_address">Ethereum Address</label>
+                <div class="eth-row">
+                    <input id="eth_address" name="eth_address" type="text" placeholder="Connect MetaMask" readonly>
+                    <button id="connectBtn" type="button">Connect</button>
+                </div>
+
+                <p id="err" class="error"></p>
+
+                <div class="actions">
+                    <button type="submit" class="primary">Register</button>
+                    <a href="/login" class="link">Already have an account? Login</a>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+<script>
+/* Simple client-side validation + MetaMask connect */
+
+const errEl = document.getElementById("err");
+const ethInput = document.getElementById("eth_address");
+const connectBtn = document.getElementById("connectBtn");
+
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+    errEl.textContent = "";
+
+    let pw = document.getElementById("password").value.trim();
+    let cpw = document.getElementById("confirm_password").value.trim();
+
+    if (pw.length < 8) {
+        e.preventDefault();
+        errEl.textContent = "Password must be at least 8 characters.";
+        return;
+    }
+
+    if (pw !== cpw) {
+        e.preventDefault();
+        errEl.textContent = "Passwords do not match.";
+        return;
+    }
+});
+
+connectBtn.addEventListener("click", async () => {
+    errEl.textContent = "";
+
+    if (window.ethereum) {
+        try {
+            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+            ethInput.value = accounts[0];
+            connectBtn.textContent = "Connected";
+            connectBtn.disabled = true;
+        } catch (error) {
+            errEl.textContent = "MetaMask connection denied.";
+        }
+    } else {
+        errEl.textContent = "MetaMask not found. Install MetaMask to continue.";
+    }
+});
+</script>
+
+</body>
+</html>
