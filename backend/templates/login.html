@@ -5,23 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
-    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 
 <body>
     <div class="container">
 
         <div class="left-panel">
-            <img src="/static/images/secure-vote.jpg" class="side-image">
+            <img src="{{ url_for('static', filename='images/secure-vote.jpg') }}" class="side-image">
         </div>
 
         <div class="right-panel">
             <h1 class="title">Welcome Back</h1>
             <p class="subtitle">Login to Student Voting System</p>
 
-            <form action="">
-                <input type="text" placeholder="College ID" required>
-                <input type="password" placeholder="Password" required>
+            <!-- FIXED FORM -->
+            <form action="{{ url_for('login') }}" method="POST">
+                <input type="text" name="student_id" placeholder="College ID" required>
+                <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
 
