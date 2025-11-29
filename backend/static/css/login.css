@@ -1,100 +1,164 @@
-*{
+/* ==============================
+   GLOBAL
+================================= */
+:root {
+    --primary: #1e3a8a;
+    --bg: #eef2ff;
+    --card: #ffffff;
+    --muted: #555;
+    --error: #c0392b;
+    --radius: 14px;
+    --shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+* {
     margin: 0;
     padding: 0;
-    font-family: "Poppins", sans-serif;
     box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
 }
 
-body{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: #f2f5ff;
+body {
+    background: var(--bg);
 }
 
-.container{
+/* ==============================
+   NAVBAR
+================================= */
+.navbar {
+    background: var(--primary);
+    color: #fff;
+    padding: 15px 25px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* ==============================
+   MAIN LOGIN CONTAINER
+================================= */
+.container {
     display: flex;
     width: 900px;
     height: 520px;
-    background: white;
-    border-radius: 20px;
+    background: var(--card);
+    margin: 40px auto;
+    border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow);
     animation: fadeIn 0.8s ease-in-out;
 }
 
-.left-panel{
+/* ==============================
+   LEFT IMAGE
+================================= */
+.left-panel {
     width: 45%;
 }
 
-.side-image{
+.side-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.right-panel{
+/* ==============================
+   RIGHT PANEL FORM
+================================= */
+.right-panel {
     width: 55%;
     padding: 50px;
 }
 
-.title{
+.title {
     font-size: 32px;
     font-weight: 700;
-    color: #1a237e;
+    color: var(--primary);
     margin-bottom: 10px;
 }
 
-.subtitle{
+.subtitle {
     font-size: 15px;
-    color: #444;
+    color: var(--muted);
     margin-bottom: 30px;
 }
 
-form input{
+label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+input {
     width: 100%;
     padding: 14px 18px;
-    margin: 12px 0;
+    margin-top: 6px;
     border-radius: 10px;
     border: 1px solid #bbb;
     font-size: 15px;
     transition: 0.3s;
 }
 
-form input:focus{
-    border-color: #3f51b5;
+input:focus {
+    border-color: var(--primary);
     outline: none;
 }
 
-button{
+/* LOGIN BUTTON */
+.primary {
     width: 100%;
     padding: 14px;
-    background: #3f51b5;
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 18px;
     transition: 0.3s;
 }
 
-button:hover{
-    background: #283593;
+.primary:hover {
+    background: #162e6b;
 }
 
-.register-text{
+/* ==============================
+   REGISTER CLEAN INLINE LINK
+================================= */
+.register-text {
     text-align: center;
     margin-top: 20px;
+    font-size: 15px;
+    color: var(--muted);
 }
 
-.register-text a{
-    color: #3f51b5;
+.register-link {
+    font-weight: 600;
+    color: var(--primary);
+    margin-left: 4px;
     text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    transition: 0.3s ease;
 }
 
-@keyframes fadeIn{
-    from{ opacity: 0; transform: translateY(20px); }
-    to{ opacity: 1; transform: translateY(0px); }
+.register-link:hover {
+    color: #162e6b;
+    border-bottom: 2px solid var(--primary);
+}
+
+/* ==============================
+   ERROR TEXT
+================================= */
+.error {
+    margin-top: 12px;
+    color: var(--error);
+}
+
+/* ==============================
+   FADE ANIMATION
+================================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0px); }
 }

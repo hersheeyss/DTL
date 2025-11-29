@@ -1,0 +1,62 @@
+/* results.css */
+
+:root {
+    --primary: #1e3a8a;
+    --background: #f7f9fc;
+    --card: #ffffff;
+    --muted: #666;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    width: 92%;
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.info {
+    color: var(--muted);
+    margin-bottom: 20px;
+}
+
+.results-list {
+    margin-top: 15px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    background: #eef1ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.name {
+    font-weight: 600;
+}
+
+.votes {
+    font-weight: 700;
+    color: var(--primary);
+}

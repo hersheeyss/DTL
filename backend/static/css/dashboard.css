@@ -1,0 +1,99 @@
+:root {
+    --primary: #1e3a8a;
+    --bg: #eef2ff;
+    --card-bg: #ffffff;
+    --muted: #555;
+    --radius: 16px;
+    --shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Poppins", sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 15px 25px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* MAIN CONTAINER */
+.container {
+    width: 900px;
+    margin: 40px auto;
+}
+
+/* GREETING CARD */
+.welcome-card {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.welcome-card h2 {
+    color: var(--primary);
+    font-size: 28px;
+}
+
+.welcome-card p {
+    color: var(--muted);
+    margin-top: 10px;
+}
+
+/* OPTIONS GRID */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+/* OPTION CARD */
+.option-card {
+    text-decoration: none;
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: var(--radius);
+    text-align: center;
+    color: black;
+    box-shadow: var(--shadow);
+    transition: 0.25s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.icon {
+    width: 75px;
+    margin-bottom: 15px;
+}
+
+.option-card h3 {
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+/* LOGOUT CARD SPECIAL COLOR */
+.logout {
+    border: 2px solid #c62828;
+}
+
+.logout:hover {
+    background: #c62828;
+    color: white;
+}
+
+.logout:hover h3,
+.logout:hover p {
+    color: white;
+}
+

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Election Results — Student Election</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        Student Election — Results
+    </div>
+
+    <main class="container">
+
+        <div class="card">
+            <h2>Live Election Results</h2>
+            <p class="info">Final vote count fetched from the blockchain.</p>
+
+            <div class="results-list">
+
+                <!-- Placeholder results (replace with real backend or blockchain later) -->
+                <div class="result-item">
+                    <span class="name">Candidate A</span>
+                    <span class="votes">{{ results.get('A', 0) }}</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="name">Candidate B</span>
+                    <span class="votes">{{ results.get('B', 0) }}</span>
+                </div>
+
+                <div class="result-item">
+                    <span class="name">Candidate C</span>
+                    <span class="votes">{{ results.get('C', 0) }}</span>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>

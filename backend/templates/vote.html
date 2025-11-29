@@ -12,7 +12,7 @@
 <!-- NAVBAR -->
 <header class="navbar">
     <div class="nav-left">
-        <span class="title">Student Election</span>
+        <span class="title">Student Election — Cast Your Vote</span>
     </div>
 
     <div class="nav-right">
@@ -25,8 +25,8 @@
 <!-- MAIN VOTING SECTION -->
 <main class="container">
     <section class="card">
-        <h2>Cast Your Vote</h2>
-        <p class="subtitle">Choose your preferred candidate and submit your vote.</p>
+        <h2>Select Your Candidate</h2>
+        <p class="subtitle">Your vote will be securely verified through blockchain.</p>
 
         <form id="voteForm">
             <div class="candidates-grid">
@@ -36,7 +36,6 @@
                     <input type="radio" name="candidate" value="{{ c.id }}">
 
                     <div class="candidate-inner">
-
                         <!-- Candidate Image -->
                         <img src="{{ url_for('static', filename='images/' + c.image) }}" class="cand-img">
 
@@ -53,7 +52,8 @@
 
             </div>
 
-            <p id="message" class="message"></p>
+            <!-- STATUS -->
+            <p id="status" class="message"></p>
 
             <div class="actions">
                 <button type="button" id="submitVoteBtn" class="primary-btn">Cast Vote</button>
@@ -64,7 +64,7 @@
 </main>
 
 
-<!-- ANIMATION -->
+<!-- BALLOT ANIMATION -->
 <div id="voteAnimation" class="vote-animation hidden">
     <div class="ballot-box">
         <div class="slot"></div>
@@ -77,3 +77,4 @@
 
 </body>
 </html>
+

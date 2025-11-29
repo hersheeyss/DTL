@@ -2,50 +2,56 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-# Home → Login
-@app.route('/')
+# HOME → LOGIN
+@app.route("/")
 def home():
     return redirect(url_for('login'))
 
-
-# -------------------
-# LOGIN
-# -------------------
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # You can add DB check later
-        return redirect(url_for('vote'))
-
-    return render_template('login.html')
-
-
-# -------------------
-# REGISTER
-# -------------------
-@app.route('/register', methods=['GET', 'POST'])
+# REGISTER PAGE
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == 'POST':
-        # You will add DB saving later, for now just redirect
+    if request.method == "POST":
+        # Later: Save user to DB
         return redirect(url_for('login'))
+    return render_template("register.html")
 
-    return render_template('register.html')
+# LOGIN PAGE
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        return redirect(url_for('dashboard'))
+    return render_template("login.html")
 
+# DASHBOARD
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
-# -------------------
 # VOTE PAGE
-# -------------------
-@app.route('/vote')
+@app.route("/vote")
 def vote():
-    # TEMPORARY DUMMY CANDIDATES (works for now)
     candidates = [
         {"id": 1, "name": "Candidate One", "position": "President", "image": "cand1.jpg"},
         {"id": 2, "name": "Candidate Two", "position": "President", "image": "cand2.jpg"},
-        {"id": 3, "name": "Candidate Three", "position": "President", "image": "cand3.jpg"}
+        {"id": 3, "name": "Candidate Three", "position": "President", "image": "cand3.jpg"},
     ]
+    return render_template("vote.html", candidates=candidates)
 
-    return render_template('vote.html', candidates=candidates)
+# RESULTS PAGE
+@app.route("/results")
+def results():
+    sample_results = {
+        "Candidate One": 12,
+        "Candidate Two": 9,
+        "Candidate Three": 15,
+    }
+    return render_template("results.html", results=sample_results)
 
+# LOGOUT
+@app.route("/logout")
+def logout():
+    return redirect(url_for("login"))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
+
