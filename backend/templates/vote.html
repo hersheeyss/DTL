@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote — Student Election</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vote.css') }}">
+</head>
+<body>
+
+    <div class="navbar">
+        Student Election — Cast Your Vote
+    </div>
+
+    <main class="container">
+
+        <div class="card">
+            <h2>Select a Candidate</h2>
+            <p class="info">Your vote will be verified through blockchain.</p>
+
+            <!-- Candidate List Example -->
+            <div class="candidate-list">
+
+                <div class="candidate">
+                    <p class="name">Candidate A</p>
+                    <button class="btn" onclick="castVote(1)">Vote</button>
+                </div>
+
+                <div class="candidate">
+                    <p class="name">Candidate B</p>
+                    <button class="btn" onclick="castVote(2)">Vote</button>
+                </div>
+
+                <div class="candidate">
+                    <p class="name">Candidate C</p>
+                    <button class="btn" onclick="castVote(3)">Vote</button>
+                </div>
+
+            </div>
+
+            <p id="status" class="status"></p>
+
+            <button id="connectBtn" class="btn-secondary">Connect MetaMask</button>
+
+        </div>
+
+    </main>
+
+<script>
+let userAccount = null;
+
+// Connect MetaMask
+document.getElementById("connectBtn").onclick = async () => {
+    if (window.ethereum) {
+        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+        userAccount = accounts[0];
+        document.getElementById("status").innerText = "Connected: " + userAccount;
+        document.getElementById("connectBtn").innerText = "Connected";
+    } else {
+        alert("MetaMask not found!");
+    }
+};
+
+// Simple JS function for now — real blockchain logic will be added later
+function castVote(candidateId) {
+    if (!userAccount) {
+        document.getElementById("status").innerText = "Please connect MetaMask first.";
+        return;
+    }
+    document.getElementById("status").innerText = "Vote submitted for Candidate " + candidateId;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+/* login.css */
+
+:root {
+    --primary: #1e3a8a;
+    --bg: #f7f9fc;
+    --card: #ffffff;
+    --muted: #666;
+    --error: #c0392b;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background: var(--primary);
+    color: #fff;
+    padding: 15px 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.container {
+    width: 92%;
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+.card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.link {
+    color: var(--muted);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.error {
+    margin-top: 12px;
+    color: var(--error);
+}

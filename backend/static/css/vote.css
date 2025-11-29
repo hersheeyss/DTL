@@ -1,0 +1,81 @@
+/* vote.css */
+
+:root {
+    --primary: #1e3a8a;
+    --secondary: #324cbb;
+    --background: #f7f9fc;
+    --muted: #666;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--background);
+}
+
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    width: 92%;
+    max-width: 700px;
+    margin: 40px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.candidate-list {
+    margin-top: 20px;
+}
+
+.candidate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #eef1ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.name {
+    margin: 0;
+    font-weight: 600;
+}
+
+.btn {
+    background: var(--primary);
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    margin-top: 15px;
+    background: var(--secondary);
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.status {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #1e3a8a;
+}

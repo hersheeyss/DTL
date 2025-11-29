@@ -1,0 +1,60 @@
+/* dashboard.css */
+
+:root {
+    --primary: #1e3a8a;
+    --background: #f7f9fc;
+    --card: #ffffff;
+    --muted: #666;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 15px 20px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.container {
+    width: 92%;
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h2, h3 {
+    margin-top: 0;
+}
+
+.info {
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 16px;
+    background: var(--primary);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.btn:hover {
+    background: #162d6f;
+}
