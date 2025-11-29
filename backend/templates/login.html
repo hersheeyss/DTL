@@ -3,31 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Voting Login</title>
+    <title>Login</title>
 
     <link rel="stylesheet" href="/static/css/login.css">
 </head>
-<body>
 
+<body>
     <div class="container">
+
         <div class="left-panel">
-            <img src="/static/images/secure-vote.jpg" alt="Login Image" class="side-image">
+            <img src="/static/images/secure-vote.jpg" class="side-image">
         </div>
 
         <div class="right-panel">
             <h1 class="title">Welcome Back</h1>
-            <p class="subtitle">Login to continue to Student Voting System</p>
+            <p class="subtitle">Login to Student Voting System</p>
 
-            <form>
+            <form action="">
                 <input type="text" placeholder="College ID" required>
                 <input type="password" placeholder="Password" required>
-
                 <button type="submit">Login</button>
             </form>
 
-            <p class="register-text">Don't have an account? <a href="#">Register</a></p>
+            <p class="register-text">
+                Don't have an account?
+                <a href="{{ url_for('register') }}">Register</a>
+            </p>
         </div>
-    </div>
 
+    </div>
 </body>
 </html>
