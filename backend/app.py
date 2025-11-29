@@ -31,21 +31,21 @@ def dashboard():
 @app.route("/vote")
 def vote():
     candidates = [
-        {"id": 1, "name": "Candidate One", "position": "President", "image": "cand1.jpg"},
-        {"id": 2, "name": "Candidate Two", "position": "President", "image": "cand2.jpg"},
-        {"id": 3, "name": "Candidate Three", "position": "President", "image": "cand3.jpg"},
+        {"id": 1, "name": "Candidate One", "position": "Class Representative", "image": "cand1.jpg"},
+        {"id": 2, "name": "Candidate Two", "position": "Class Representative", "image": "cand2.jpg"},
+        {"id": 3, "name": "Candidate Three", "position": "Class Representative", "image": "cand3.jpg"},
     ]
     return render_template("vote.html", candidates=candidates)
 
-# RESULTS PAGE
+# RESULTS PAGE (UPDATED)
 @app.route("/results")
 def results():
-    sample_results = {
-        "Candidate One": 12,
-        "Candidate Two": 9,
-        "Candidate Three": 15,
-    }
-    return render_template("results.html", results=sample_results)
+    candidates = [
+        {"name": "Candidate One", "position": "Class Representative", "image": "cand1.jpg", "votes": 12},
+        {"name": "Candidate Two", "position": "Class Representative", "image": "cand2.jpg", "votes": 9},
+        {"name": "Candidate Three", "position": "Class Representative", "image": "cand3.jpg", "votes": 15},
+    ]
+    return render_template("results.html", candidates=candidates)
 
 # LOGOUT
 @app.route("/logout")
@@ -54,4 +54,5 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 

@@ -1,9 +1,10 @@
 const connectBtn = document.getElementById("connectWalletBtn");
 const walletStatus = document.getElementById("walletStatus");
 const submitVoteBtn = document.getElementById("submitVoteBtn");
-const messageEl = document.getElementById("message");
+const statusEl = document.getElementById("status");
 
-let selectedAccount = null;
+let userAccount = null;
+
 
 // Connect MetaMask
 connectBtn.addEventListener("click", async () => {
@@ -12,51 +13,63 @@ connectBtn.addEventListener("click", async () => {
             const accounts = await window.ethereum.request({
                 method: "eth_requestAccounts"
             });
-            selectedAccount = accounts[0];
 
-            walletStatus.textContent = "Wallet: " + shorten(selectedAccount);
+            userAccount = accounts[0];
+
+            walletStatus.textContent = "Wallet: " + formatWallet(userAccount);
             connectBtn.textContent = "Connected";
             connectBtn.disabled = true;
 
-        } catch {
-            messageEl.textContent = "MetaMask connection denied.";
-            messageEl.classList.add("error");
+            statusEl.textContent = "Wallet connected!";
+            statusEl.classList.add("success");
+
+        } catch (error) {
+            statusEl.textContent = "MetaMask connection denied.";
+            statusEl.classList.add("error");
         }
     } else {
-        messageEl.textContent = "MetaMask not installed.";
-        messageEl.classList.add("error");
+        statusEl.textContent = "MetaMask is not installed.";
+        statusEl.classList.add("error");
     }
 });
 
-// Shorten wallet address
-function shorten(addr) {
+
+// Shorten wallet for UI
+function formatWallet(addr) {
     return addr.slice(0, 6) + "..." + addr.slice(-4);
 }
 
-// Vote button
-submitVoteBtn.addEventListener("click", () => {
-    messageEl.textContent = "";
 
-    if (!selectedAccount) {
-        messageEl.textContent = "Connect MetaMask first!";
-        messageEl.classList.add("error");
+// Cast Vote
+submitVoteBtn.addEventListener("click", () => {
+    statusEl.textContent = "";
+    statusEl.classList.remove("error", "success");
+
+    if (!userAccount) {
+        statusEl.textContent = "Please connect MetaMask first.";
+        statusEl.classList.add("error");
         return;
     }
 
     const selected = document.querySelector('input[name="candidate"]:checked');
+
     if (!selected) {
-        messageEl.textContent = "Please select a candidate.";
-        messageEl.classList.add("error");
+        statusEl.textContent = "Please select a candidate!";
+        statusEl.classList.add("error");
         return;
     }
 
-    // Show animation
+    const candidateId = selected.value;
+
+    // Animation
     const animation = document.getElementById("voteAnimation");
     animation.classList.remove("hidden");
 
     setTimeout(() => {
         animation.classList.add("hidden");
-        messageEl.textContent = "Vote cast successfully!";
-        messageEl.classList.add("success");
+
+        statusEl.textContent = "Vote successfully cast!";
+        statusEl.classList.add("success");
+
     }, 1500);
 });

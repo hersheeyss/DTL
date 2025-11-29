@@ -5,42 +5,51 @@
     <title>Election Results — Student Election</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-    <div class="navbar">
-        Student Election — Results
-    </div>
+<!-- NAVBAR -->
+<header class="navbar">
+    <span class="title">Student Election — Results</span>
+</header>
 
-    <main class="container">
 
-        <div class="card">
-            <h2>Live Election Results</h2>
-            <p class="info">Final vote count fetched from the blockchain.</p>
+<!-- MAIN RESULTS SECTION -->
+<main class="container">
+    <section class="card">
 
-            <div class="results-list">
+        <h2>Live Election Results</h2>
+        <p class="subtitle">Votes fetched securely from blockchain.</p>
 
-                <!-- Placeholder results (replace with real backend or blockchain later) -->
-                <div class="result-item">
-                    <span class="name">Candidate A</span>
-                    <span class="votes">{{ results.get('A', 0) }}</span>
-                </div>
+        <div class="results-grid">
 
-                <div class="result-item">
-                    <span class="name">Candidate B</span>
-                    <span class="votes">{{ results.get('B', 0) }}</span>
-                </div>
+            {% for c in candidates %}
+            <div class="result-card">
 
-                <div class="result-item">
-                    <span class="name">Candidate C</span>
-                    <span class="votes">{{ results.get('C', 0) }}</span>
-                </div>
+                <img src="{{ url_for('static', filename='images/' + c.image) }}" class="cand-img">
+
+                <h3>{{ c.name }}</h3>
+                <p class="position">{{ c.position }}</p>
+
+                <p class="votes">
+                    Votes: <span class="vote-num">{{ c.votes }}</span>
+                </p>
 
             </div>
+            {% endfor %}
+
         </div>
 
-    </main>
+        <div class="actions">
+            <a href="/dashboard" class="link-btn">Back</a>
+        </div>
+
+    </section>
+</main>
 
 </body>
 </html>
+
+

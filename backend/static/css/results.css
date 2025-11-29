@@ -1,62 +1,109 @@
-/* results.css */
-
 :root {
     --primary: #1e3a8a;
-    --background: #f7f9fc;
-    --card: #ffffff;
-    --muted: #666;
+    --bg: #eef2ff;
+    --card-bg: #ffffff;
+    --muted: #444;
+    --shadow: 0 8px 20px rgba(0,0,0,0.15);
+    --radius: 14px;
 }
 
 body {
     margin: 0;
-    background: var(--background);
-    font-family: Arial, sans-serif;
+    background: var(--bg);
+    font-family: "Poppins", sans-serif;
 }
 
+/* NAVBAR */
 .navbar {
+    height: 60px;
     background: var(--primary);
     color: white;
-    padding: 15px 20px;
-    font-size: 22px;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    font-size: 20px;
+    font-weight: 600;
 }
 
+/* MAIN CONTAINER */
 .container {
-    width: 92%;
-    max-width: 700px;
+    max-width: 1000px;
     margin: 40px auto;
+    padding: 0 20px;
 }
 
+/* CARD */
 .card {
-    background: white;
+    background: var(--card-bg);
     padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
-.info {
+/* SUBTITLE */
+.subtitle {
     color: var(--muted);
     margin-bottom: 20px;
 }
 
-.results-list {
-    margin-top: 15px;
+/* GRID STYLE (SIDE-BY-SIDE) */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
 }
 
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    background: #eef1ff;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+/* RESULT CARD STYLE */
+.result-card {
+    background: #f7f8ff;
+    padding: 18px;
+    border-radius: var(--radius);
+    text-align: center;
+    border: 1px solid #d7dbff;
+    box-shadow: var(--shadow);
+    transition: 0.3s;
 }
 
-.name {
-    font-weight: 600;
+.result-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 34px rgba(0,0,0,0.2);
+}
+
+/* IMAGE FIX (Always Perfect) */
+.cand-img {
+    width: 100%;
+    height: 160px;
+    border-radius: 12px;
+    object-fit: cover;   /* prevents stretching */
+    margin-bottom: 12px;
+}
+
+.position {
+    font-size: 0.85rem;
+    color: #666;
 }
 
 .votes {
-    font-weight: 700;
+    font-weight: bold;
+    margin-top: 10px;
     color: var(--primary);
+}
+
+.vote-num {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.link-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 10px 18px;
+    background: var(--primary);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.link-btn:hover {
+    background: #162e6b;
 }
