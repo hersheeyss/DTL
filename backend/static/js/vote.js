@@ -3,37 +3,28 @@ const walletStatus = document.getElementById("walletStatus");
 const submitVoteBtn = document.getElementById("submitVoteBtn");
 const statusEl = document.getElementById("status");
 
+const popup = document.getElementById("popup");
+const popupTitle = document.getElementById("popup-title");
+const popupMessage = document.getElementById("popup-message");
+const popupBtn = document.getElementById("popup-btn");
+
 let userAccount = null;
 
-// ---------------------- BEAUTIFUL POPUP ----------------------
-function showPopup(title, message, color = "blue") {
-    const div = document.createElement("div");
-    div.style.position = "fixed";
-    div.style.bottom = "20px";
-    div.style.right = "20px";
-    div.style.padding = "15px 20px";
-    div.style.background = color;
-    div.style.color = "white";
-    div.style.borderRadius = "10px";
-    div.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
-    div.style.fontSize = "16px";
-    div.style.zIndex = 9999;
-
-    div.innerHTML = `<b>${title}</b><br>${message}`;
-
-    document.body.appendChild(div);
-
-    setTimeout(() => {
-        div.remove();
-    }, 2500);
+/* ---------------------- POPUP FUNCTION ---------------------- */
+function showPopup(title, message) {
+    popupTitle.textContent = title;
+    popupMessage.textContent = message;
+    popup.classList.remove("hidden");
 }
 
-// ---------------------- CONNECT METAMASK ----------------------
+popupBtn.addEventListener("click", () => {
+    popup.classList.add("hidden");
+});
+
+/* ---------------------- CONNECT METAMASK ---------------------- */
 connectBtn.addEventListener("click", async () => {
-    
     if (!window.ethereum) {
-        showPopup("MetaMask Missing", "Please install MetaMask!", "red");
-        return;
+        return showPopup("MetaMask Missing", "Please install MetaMask to vote.");
     }
 
     try {
@@ -44,59 +35,86 @@ connectBtn.addEventListener("click", async () => {
         userAccount = accounts[0];
 
         walletStatus.textContent =
-            "Connected: " + userAccount.slice(0, 6) + "..." + userAccount.slice(-4);
+            "Wallet: " + userAccount.slice(0, 6) + "..." + userAccount.slice(-4);
 
-        connectBtn.textContent = "Connected ✔";
+        connectBtn.textContent = "Connected";
         connectBtn.disabled = true;
 
-        showPopup("Success", "Wallet connected!", "green");
-
+        showPopup("Wallet Connected", "Your MetaMask wallet is now linked!");
     } catch (err) {
-        showPopup("Failed", "User denied connection!", "red");
+        return showPopup("Connection Failed", "Could not connect MetaMask.");
     }
 });
 
-// ---------------------- SUBMIT VOTE ----------------------
-submitVoteBtn.addEventListener("click", async () => {
-    statusEl.textContent = "";
+/* ---------------------- SEND VOTE TO BLOCKCHAIN ---------------------- */
+async function sendVoteToBlockchain(candidateId) {
+    const contractAddress = "0x9BACc0331f680B9f4d2bE8C7E18A6baeE8dC23aA";
 
+    const ABI = [
+        {
+            "inputs": [{ "internalType": "uint256", "name": "candidateId", "type": "uint256" }],
+            "name": "castVote",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }
+    ];
+
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, ABI, signer);
+
+    let tx = await contract.castVote(candidateId);
+    await tx.wait(); // Wait for confirmation
+
+    return tx.hash;
+}
+
+/* ---------------------- SUBMIT VOTE ---------------------- */
+submitVoteBtn.addEventListener("click", async () => {
     if (!userAccount) {
-        showPopup("Error", "Please connect MetaMask first!", "red");
-        return;
+        return showPopup("Wallet Not Connected", "Please connect MetaMask first!");
     }
 
     const selected = document.querySelector('input[name="candidate"]:checked');
 
     if (!selected) {
-        showPopup("Error", "Select a candidate!", "red");
-        return;
+        return showPopup("No Candidate Selected", "Please select a candidate.");
     }
 
-    showPopup("Please wait", "Submitting vote to blockchain...", "blue");
+    const candidateId = parseInt(selected.value);
 
     try {
+        showPopup("Processing", "Please confirm the transaction in MetaMask...");
+
+        /* 1️⃣ Send vote to blockchain */
+        let txHash = await sendVoteToBlockchain(candidateId);
+
+        /* 2️⃣ Send vote to database (prevents double voting) */
         const response = await fetch("/cast_vote", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ candidate_id: selected.value })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ candidate_id: candidateId })
         });
 
         const result = await response.json();
 
         if (result.status === "success") {
-            showPopup("Success", "Vote submitted!", "green");
+            showPopup("Vote Recorded", "Your vote is successfully stored on blockchain! 🗳️");
 
             setTimeout(() => {
                 window.location.href = "/dashboard";
-            }, 1200);
+            }, 1500);
 
+        } else if (result.message === "You have already voted!") {
+            showPopup("Already Voted", "You can vote only one time!");
         } else {
-            showPopup("Error", result.message, "red");
+            showPopup("Error", result.message);
         }
 
     } catch (err) {
-        showPopup("Failed", "Voting failed!", "red");
+        console.error(err);
+        showPopup("Error", "Voting failed. Try again.");
     }
 });
-
 
