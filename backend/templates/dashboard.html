@@ -4,51 +4,64 @@
     <meta charset="UTF-8">
     <title>Dashboard — Student Election</title>
 
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 
-    <!-- NAVBAR -->
-    <div class="navbar">
-        Student Election — Dashboard
+<!-- NAVBAR -->
+<div class="navbar">Student Election — Dashboard</div>
+
+<main class="container">
+
+    <!-- WELCOME CARD -->
+    <div class="welcome-card">
+        <h2>Welcome, {{ session['student_id'] }}</h2>
+        <p>You are logged into the secure voting system.</p>
     </div>
 
-    <main class="container">
+    <!-- OPTIONS GRID -->
+    <div class="options-grid">
 
-        <!-- GREETING CARD -->
-        <div class="welcome-card">
-            <h2>Welcome, {{ username or "Student" }}</h2>
-            <p>You are logged into the secure blockchain-powered voting system.</p>
-        </div>
+        <!-- CAST VOTE -->
+        <a href="/vote" class="option-card">
+            <img src="{{ url_for('static', filename='images/vote.png') }}" class="icon">
+            <h3>Cast Your Vote</h3>
+            <p>Vote once using your verified ID.</p>
+        </a>
 
-        <!-- OPTIONS GRID -->
-        <div class="options-grid">
+        <!-- VIEW RESULTS -->
+        <a href="/results" class="option-card">
+            <img src="{{ url_for('static', filename='images/results.png') }}" class="icon">
+            <h3>View Results</h3>
+            <p>See blockchain-backed election results.</p>
+        </a>
 
-            <!-- CAST VOTE -->
-            <a href="/vote" class="option-card">
-                <img src="{{ url_for('static', filename='images/vote.png') }}" class="icon">
-                <h3>Cast Your Vote</h3>
-                <p>Vote once using your verified account.</p>
-            </a>
+        <!-- ADMIN LOGIN -->
+        <a href="/admin" class="option-card">
+            <img src="{{ url_for('static', filename='images/admin.png') }}" class="icon">
+            <h3>Admin Login</h3>
+            <p>Restricted access for administrators.</p>
+        </a>
 
-            <!-- VIEW RESULTS -->
-            <a href="/results" class="option-card">
-                <img src="{{ url_for('static', filename='images/results.png') }}" class="icon">
-                <h3>View Results</h3>
-                <p>See live blockchain-counted results.</p>
-            </a>
+        <!-- PLACEHOLDER TO CENTER LOGOUT -->
+        <div></div>
 
-            <!-- LOGOUT -->
-            <a href="/logout" class="option-card logout">
-                <img src="{{ url_for('static', filename='images/logout.png') }}" class="icon">
-                <h3>Logout</h3>
-                <p>Exit your account securely.</p>
-            </a>
+        <!-- LOGOUT -->
+        <a href="/logout" class="option-card logout">
+            <img src="{{ url_for('static', filename='images/logout.png') }}" class="icon">
+            <h3>Logout</h3>
+            <p>Exit your account securely.</p>
+        </a>
 
-        </div>
-
-    </main>
+    </div>
+</main>
 
 </body>
 </html>
+
+
+
 

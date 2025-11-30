@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 DB_NAME = "election.db"
 
@@ -10,44 +11,29 @@ def get_db():
 
 
 def init_db():
+    """Create tables if they don't exist."""
     conn = get_db()
 
     # USERS TABLE
     conn.execute("""
-    CREATE TABLE IF NOT EXISTS users(
+    CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        full_name   TEXT,
-        student_id  TEXT UNIQUE,
-        email       TEXT,
-        password    TEXT,
-        eth_address TEXT
+        student_id  TEXT UNIQUE NOT NULL,
+        password    TEXT NOT NULL,
+        eth_address TEXT NOT NULL
     );
     """)
 
-    # VOTES TABLE (anonymous voter_hash)
+    # VOTES TABLE (anonymous via hash, one vote per student)
     conn.execute("""
-    CREATE TABLE IF NOT EXISTS votes(
+    CREATE TABLE IF NOT EXISTS votes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        voter_hash TEXT UNIQUE,
-        candidate_id INTEGER
+        voter_hash  TEXT UNIQUE NOT NULL,
+        candidate_id INTEGER NOT NULL
     );
     """)
 
     conn.commit()
     conn.close()
-
-
-# ⬇️ New function: get total votes per candidate
-def get_vote_counts():
-    conn = get_db()
-
-    rows = conn.execute("""
-        SELECT candidate_id, COUNT(*) AS votes
-        FROM votes
-        GROUP BY candidate_id
-    """).fetchall()
-
-    # Return as dictionary {candidate_id: count}
-    return {row["candidate_id"]: row["votes"] for row in rows}
 
 

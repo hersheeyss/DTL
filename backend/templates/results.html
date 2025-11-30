@@ -3,53 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Election Results — Student Election</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
     <span class="title">Student Election — Results</span>
 </header>
 
-
-<!-- MAIN RESULTS SECTION -->
 <main class="container">
     <section class="card">
-
-        <h2>Live Election Results</h2>
-        <p class="subtitle">Votes fetched securely from blockchain.</p>
+        <h2>Live Results (Database)</h2>
+        <p class="subtitle">Votes counted from the local election database.</p>
 
         <div class="results-grid">
-
             {% for c in candidates %}
             <div class="result-card">
-
                 <img src="{{ url_for('static', filename='images/' + c.image) }}" class="cand-img">
-
                 <h3>{{ c.name }}</h3>
                 <p class="position">{{ c.position }}</p>
-
                 <p class="votes">
                     Votes: <span class="vote-num">{{ c.votes }}</span>
                 </p>
-
             </div>
             {% endfor %}
-
         </div>
 
         <div class="actions">
-            <a href="/dashboard" class="link-btn">Back</a>
+            <a href="{{ url_for('dashboard') }}" class="link-btn">Back</a>
         </div>
-
     </section>
 </main>
 
 </body>
 </html>
+
+
+
+
+
 
 

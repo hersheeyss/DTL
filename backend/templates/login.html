@@ -2,54 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — Student Election</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
-
 <body>
 
-    <!-- NAVBAR -->
-    <div class="navbar">Student Election — Login</div>
+<div class="navbar">Student Election — Login</div>
 
-    <!-- LOGIN BOX -->
-    <div class="container">
+<div class="container">
 
-        <!-- LEFT IMAGE PANEL -->
-        <div class="left-panel">
-            <img src="{{ url_for('static', filename='images/secure-vote.jpg') }}" class="side-image">
-        </div>
-
-        <!-- RIGHT FORM PANEL -->
-        <div class="right-panel">
-
-            <h2 class="title">Welcome Back</h2>
-            <p class="subtitle">Login to access the voting system</p>
-
-            <form action="{{ url_for('login') }}" method="POST">
-
-                <label for="student_id">College ID</label>
-                <input id="student_id" name="student_id" type="text" required>
-
-                <label for="password">Password</label>
-                <input id="password" name="password" type="password" required>
-
-                <p class="error">{{ error }}</p>
-
-                <button type="submit" class="primary">Login</button>
-
-            </form>
-
-            <!-- REGISTER LINK -->
-            <p class="register-text">
-                Don’t have an account?
-                <a href="{{ url_for('register') }}" class="register-link">Register</a>
-            </p>
-
-        </div>
-
+    <div class="left-panel">
+        <img src="{{ url_for('static', filename='images/secure-vote.jpg') }}" class="side-image">
     </div>
+
+    <div class="right-panel">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Login to access the voting system</p>
+
+        <form action="{{ url_for('login') }}" method="POST">
+            <label for="student_id">Student ID</label>
+            <input id="student_id" name="student_id" type="text" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required>
+
+            {% if error %}
+              <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <button type="submit" class="primary">Login</button>
+        </form>
+
+        <p class="register-text">
+            Don’t have an account?
+            <a href="{{ url_for('register') }}" class="register-link">Register</a>
+        </p>
+    </div>
+
+</div>
 
 </body>
 </html>
+

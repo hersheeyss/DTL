@@ -51,8 +51,9 @@ body {
 /* OPTIONS GRID */
 .options-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
+    justify-items: center;
 }
 
 /* OPTION CARD */
@@ -60,6 +61,7 @@ body {
     text-decoration: none;
     background: var(--card-bg);
     padding: 25px;
+    width: 240px;
     border-radius: var(--radius);
     text-align: center;
     color: black;
@@ -74,7 +76,9 @@ body {
 
 .icon {
     width: 75px;
+    height: 75px;
     margin-bottom: 15px;
+    object-fit: contain;
 }
 
 .option-card h3 {
