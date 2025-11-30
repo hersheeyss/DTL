@@ -5,94 +5,98 @@ const statusEl = document.getElementById("status");
 
 let userAccount = null;
 
+// ---------------------- BEAUTIFUL POPUP ----------------------
+function showPopup(title, message, color = "blue") {
+    const div = document.createElement("div");
+    div.style.position = "fixed";
+    div.style.bottom = "20px";
+    div.style.right = "20px";
+    div.style.padding = "15px 20px";
+    div.style.background = color;
+    div.style.color = "white";
+    div.style.borderRadius = "10px";
+    div.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
+    div.style.fontSize = "16px";
+    div.style.zIndex = 9999;
 
-// ---------------- CONNECT METAMASK ----------------
+    div.innerHTML = `<b>${title}</b><br>${message}`;
+
+    document.body.appendChild(div);
+
+    setTimeout(() => {
+        div.remove();
+    }, 2500);
+}
+
+// ---------------------- CONNECT METAMASK ----------------------
 connectBtn.addEventListener("click", async () => {
-    if (window.ethereum) {
-        try {
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts"
-            });
+    
+    if (!window.ethereum) {
+        showPopup("MetaMask Missing", "Please install MetaMask!", "red");
+        return;
+    }
 
-            userAccount = accounts[0];
-            walletStatus.textContent = "Wallet: " + shorten(userAccount);
+    try {
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts"
+        });
 
-            connectBtn.textContent = "Connected";
-            connectBtn.disabled = true;
+        userAccount = accounts[0];
 
-            statusEl.textContent = "Wallet connected!";
-            statusEl.classList.add("success");
+        walletStatus.textContent =
+            "Connected: " + userAccount.slice(0, 6) + "..." + userAccount.slice(-4);
 
-        } catch (err) {
-            statusEl.textContent = "MetaMask connection denied!";
-            statusEl.classList.add("error");
-        }
+        connectBtn.textContent = "Connected ✔";
+        connectBtn.disabled = true;
 
-    } else {
-        statusEl.textContent = "MetaMask not installed!";
-        statusEl.classList.add("error");
+        showPopup("Success", "Wallet connected!", "green");
+
+    } catch (err) {
+        showPopup("Failed", "User denied connection!", "red");
     }
 });
 
-
-// Shorten wallet address
-function shorten(addr) {
-    return addr.slice(0, 6) + "..." + addr.slice(-4);
-}
-
-
-// ---------------- CAST VOTE ----------------
+// ---------------------- SUBMIT VOTE ----------------------
 submitVoteBtn.addEventListener("click", async () => {
     statusEl.textContent = "";
-    statusEl.classList.remove("error", "success");
 
     if (!userAccount) {
-        statusEl.textContent = "Please connect MetaMask first.";
-        statusEl.classList.add("error");
+        showPopup("Error", "Please connect MetaMask first!", "red");
         return;
     }
 
     const selected = document.querySelector('input[name="candidate"]:checked');
+
     if (!selected) {
-        statusEl.textContent = "Please select a candidate!";
-        statusEl.classList.add("error");
+        showPopup("Error", "Select a candidate!", "red");
         return;
     }
 
-    const candidateId = selected.value;
+    showPopup("Please wait", "Submitting vote to blockchain...", "blue");
 
-    // Show animation box
-    const animation = document.getElementById("voteAnimation");
-    animation.classList.remove("hidden");
+    try {
+        const response = await fetch("/cast_vote", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ candidate_id: selected.value })
+        });
 
-    // Send vote to Flask API
-    const response = await fetch("/cast_vote", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({candidate_id: candidateId})
-    });
-
-    const result = await response.json();
-
-    // Finish animation
-    setTimeout(() => {
-        animation.classList.add("hidden");
+        const result = await response.json();
 
         if (result.status === "success") {
-            statusEl.textContent = "Vote successfully cast!";
-            statusEl.classList.add("success");
+            showPopup("Success", "Vote submitted!", "green");
 
-            // redirect to dashboard
             setTimeout(() => {
                 window.location.href = "/dashboard";
-            }, 2000);
+            }, 1200);
 
         } else {
-            statusEl.textContent = result.message;
-            statusEl.classList.add("error");
+            showPopup("Error", result.message, "red");
         }
 
-    }, 1500);
+    } catch (err) {
+        showPopup("Failed", "Voting failed!", "red");
+    }
 });
 
 

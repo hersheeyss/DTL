@@ -1,14 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-from utils.db import get_db
-from utils.security import hash_identity
 import bcrypt
 
-app = Flask(
-    __name__,
-    template_folder="templates",
-    static_folder="static"
-)
+from utils.db import get_db, get_vote_counts
+from utils.security import hash_identity
 
+app = Flask(__name__)
 app.secret_key = "supersecretkey"
 
 
@@ -22,23 +18,24 @@ def home():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        full_name = request.form["full_name"]
-        student_id = request.form["student_id"]
-        email = request.form["email"]
+        full_name = request.form["full_name"].strip()
+        student_id = request.form["student_id"].strip()
+        email = request.form["email"].strip()
         password = request.form["password"]
-        eth_address = request.form["eth_address"]
+        eth_address = request.form["eth_address"].strip()
 
         hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
         db = get_db()
+
         try:
-            db.execute(
-                "INSERT INTO users(full_name, student_id, email, password, eth_address) VALUES(?,?,?,?,?)",
-                (full_name, student_id, email, hashed_pw, eth_address)
-            )
+            db.execute("""
+                INSERT INTO users(full_name, student_id, email, password, eth_address)
+                VALUES (?, ?, ?, ?, ?)
+            """, (full_name, student_id, email, hashed_pw, eth_address))
             db.commit()
         except Exception as e:
-            print("Register error:", e)
+            print("Register Error:", e)
             return render_template("register.html", err="Student ID already exists")
 
         return redirect(url_for("login"))
@@ -59,7 +56,10 @@ def login():
             (student_id,)
         ).fetchone()
 
-        if user and bcrypt.checkpw(password.encode(), user["password"].encode()):
+        if not user:
+            return render_template("login.html", error="Invalid ID or password")
+
+        if bcrypt.checkpw(password.encode(), user["password"].encode()):
             session["student_id"] = user["student_id"]
             session["name"] = user["full_name"]
             return redirect(url_for("dashboard"))
@@ -75,7 +75,7 @@ def dashboard():
     if "student_id" not in session:
         return redirect(url_for("login"))
 
-    return render_template("dashboard.html", username=session.get("name", "Student"))
+    return render_template("dashboard.html", username=session["name"])
 
 
 # ---------------- VOTE PAGE ----------------
@@ -93,66 +93,70 @@ def vote():
     return render_template("vote.html", candidates=candidates)
 
 
-# ---------------- CAST VOTE ----------------
+# ---------------- CAST VOTE (NO BLOCKCHAIN HERE) ----------------
 @app.route("/cast_vote", methods=["POST"])
 def cast_vote():
     if "student_id" not in session:
-        return jsonify({"status": "error", "message": "Not logged in"}), 400
+        return jsonify({"status": "error", "message": "Not logged in"})
 
     data = request.get_json()
     candidate_id = data.get("candidate_id")
 
     if not candidate_id:
-        return jsonify({"status": "error", "message": "No candidate selected"}), 400
+        return jsonify({"status": "error", "message": "No candidate selected"})
 
+    # Hash student ID so votes stay anonymous
     student_id = session["student_id"]
     voter_hash = hash_identity(student_id)
 
     db = get_db()
 
+    # ---- CHECK IF STUDENT ALREADY VOTED ----
     already = db.execute(
         "SELECT * FROM votes WHERE voter_hash=?",
         (voter_hash,)
     ).fetchone()
 
     if already:
-        return jsonify({"status": "error", "message": "You already voted!"}), 400
+        return jsonify({"status": "error", "message": "You already voted!"})
 
+    # ---- SAVE VOTE IN LOCAL DB ----
     db.execute(
-        "INSERT INTO votes(voter_hash, candidate_id) VALUES(?, ?)",
+        "INSERT INTO votes(voter_hash, candidate_id) VALUES (?, ?)",
         (voter_hash, candidate_id)
     )
     db.commit()
 
-    return jsonify({"status": "success", "message": "Vote submitted!"})
+    # No blockchain here → Frontend handles MetaMask transaction
+    return jsonify({"status": "success"})
 
 
-# ---------------- RESULTS ----------------
+# ---------------- RESULTS PAGE (LOCAL DB ONLY) ----------------
 @app.route("/results")
 def results():
     if "student_id" not in session:
         return redirect(url_for("login"))
 
-    db = get_db()
-
-    rows = db.execute("""
-        SELECT candidate_id, COUNT(*) AS votes
-        FROM votes
-        GROUP BY candidate_id
-    """).fetchall()
-
-    counts = {row["candidate_id"]: row["votes"] for row in rows}
+    # Blockchain vote fetch
+    try:
+        votes1 = contract.functions.getVotes(1).call()
+        votes2 = contract.functions.getVotes(2).call()
+        votes3 = contract.functions.getVotes(3).call()
+    except Exception as e:
+        print("Blockchain error:", e)
+        votes1 = votes2 = votes3 = 0
 
     candidates = [
-        {"name": "Candidate One", "position": "Class Representative", "image": "cand1.jpg",
-         "votes": counts.get(1, 0)},
-        {"name": "Candidate Two", "position": "Class Representative", "image": "cand2.jpg",
-         "votes": counts.get(2, 0)},
-        {"name": "Candidate Three", "position": "Class Representative", "image": "cand3.jpg",
-         "votes": counts.get(3, 0)},
+        {"id": 1, "name": "Candidate One", "position": "Class Representative", "image": "cand1.jpg",
+         "votes": votes1},
+        {"id": 2, "name": "Candidate Two", "position": "Class Representative", "image": "cand2.jpg",
+         "votes": votes2},
+        {"id": 3, "name": "Candidate Three", "position": "Class Representative", "image": "cand3.jpg",
+         "votes": votes3},
     ]
 
     return render_template("results.html", candidates=candidates)
+
 
 
 # ---------------- LOGOUT ----------------
@@ -162,8 +166,6 @@ def logout():
     return redirect(url_for("login"))
 
 
+# ---------------- MAIN ----------------
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
