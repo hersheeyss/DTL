@@ -6,7 +6,7 @@ const statusEl = document.getElementById("status");
 let userAccount = null;
 
 
-// Connect MetaMask
+// ---------------- CONNECT METAMASK ----------------
 connectBtn.addEventListener("click", async () => {
     if (window.ethereum) {
         try {
@@ -15,33 +15,34 @@ connectBtn.addEventListener("click", async () => {
             });
 
             userAccount = accounts[0];
+            walletStatus.textContent = "Wallet: " + shorten(userAccount);
 
-            walletStatus.textContent = "Wallet: " + formatWallet(userAccount);
             connectBtn.textContent = "Connected";
             connectBtn.disabled = true;
 
             statusEl.textContent = "Wallet connected!";
             statusEl.classList.add("success");
 
-        } catch (error) {
-            statusEl.textContent = "MetaMask connection denied.";
+        } catch (err) {
+            statusEl.textContent = "MetaMask connection denied!";
             statusEl.classList.add("error");
         }
+
     } else {
-        statusEl.textContent = "MetaMask is not installed.";
+        statusEl.textContent = "MetaMask not installed!";
         statusEl.classList.add("error");
     }
 });
 
 
-// Shorten wallet for UI
-function formatWallet(addr) {
+// Shorten wallet address
+function shorten(addr) {
     return addr.slice(0, 6) + "..." + addr.slice(-4);
 }
 
 
-// Cast Vote
-submitVoteBtn.addEventListener("click", () => {
+// ---------------- CAST VOTE ----------------
+submitVoteBtn.addEventListener("click", async () => {
     statusEl.textContent = "";
     statusEl.classList.remove("error", "success");
 
@@ -52,7 +53,6 @@ submitVoteBtn.addEventListener("click", () => {
     }
 
     const selected = document.querySelector('input[name="candidate"]:checked');
-
     if (!selected) {
         statusEl.textContent = "Please select a candidate!";
         statusEl.classList.add("error");
@@ -61,15 +61,38 @@ submitVoteBtn.addEventListener("click", () => {
 
     const candidateId = selected.value;
 
-    // Animation
+    // Show animation box
     const animation = document.getElementById("voteAnimation");
     animation.classList.remove("hidden");
 
+    // Send vote to Flask API
+    const response = await fetch("/cast_vote", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({candidate_id: candidateId})
+    });
+
+    const result = await response.json();
+
+    // Finish animation
     setTimeout(() => {
         animation.classList.add("hidden");
 
-        statusEl.textContent = "Vote successfully cast!";
-        statusEl.classList.add("success");
+        if (result.status === "success") {
+            statusEl.textContent = "Vote successfully cast!";
+            statusEl.classList.add("success");
+
+            // redirect to dashboard
+            setTimeout(() => {
+                window.location.href = "/dashboard";
+            }, 2000);
+
+        } else {
+            statusEl.textContent = result.message;
+            statusEl.classList.add("error");
+        }
 
     }, 1500);
 });
+
+
