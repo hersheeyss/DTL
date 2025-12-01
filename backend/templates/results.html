@@ -2,41 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Election Results — Student Election</title>
+    <title>Live Results — Student Election</title>
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 
 <header class="navbar">
-    <span class="title">Student Election — Results</span>
+    <h2 class="title">Live Election Results</h2>
+    <a href="/dashboard" class="back-btn">Back</a>
 </header>
 
 <main class="container">
-    <section class="card">
-        <h2>Live Results (Database)</h2>
-        <p class="subtitle">Votes counted from the local election database.</p>
 
-        <div class="results-grid">
-            {% for c in candidates %}
-            <div class="result-card">
-                <img src="{{ url_for('static', filename='images/' + c.image) }}" class="cand-img">
-                <h3>{{ c.name }}</h3>
-                <p class="position">{{ c.position }}</p>
-                <p class="votes">
-                    Votes: <span class="vote-num">{{ c.votes }}</span>
-                </p>
-            </div>
-            {% endfor %}
+    <div class="winner-box" id="winnerBox">
+        <h2 id="winnerText">Winner: —</h2>
+        <p class="note">Results update every 5 seconds from the blockchain</p>
+    </div>
+
+    <div class="results-grid">
+        <div class="result-card" id="card1">
+            <img src="{{ url_for('static', filename='images/cand1.jpg') }}" class="cand-img">
+            <h3>Candidate One</h3>
+            <p class="position">Class Rep</p>
+            <p class="votes">Votes: <span id="v1">0</span></p>
         </div>
 
-        <div class="actions">
-            <a href="{{ url_for('dashboard') }}" class="link-btn">Back</a>
+        <div class="result-card" id="card2">
+            <img src="{{ url_for('static', filename='images/cand2.jpg') }}" class="cand-img">
+            <h3>Candidate Two</h3>
+            <p class="position">Class Rep</p>
+            <p class="votes">Votes: <span id="v2">0</span></p>
         </div>
-    </section>
+
+        <div class="result-card" id="card3">
+            <img src="{{ url_for('static', filename='images/cand3.jpg') }}" class="cand-img">
+            <h3>Candidate Three</h3>
+            <p class="position">Class Rep</p>
+            <p class="votes">Votes: <span id="v3">0</span></p>
+        </div>
+    </div>
+
+    <canvas id="resultsChart" class="chart"></canvas>
+
 </main>
+
+<!-- LOCAL Ethers.js -->
+<script src="{{ url_for('static', filename='vendor/ethers.umd.min.js') }}"></script>
+
+<!-- Config + Logic -->
+<script src="{{ url_for('static', filename='jss/blockchainConfig.js') }}"></script>
+<script src="{{ url_for('static', filename='jss/results.js') }}"></script>
 
 </body>
 </html>
+
+
+
+
 
 
 
