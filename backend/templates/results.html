@@ -10,19 +10,27 @@
 
 <body>
 
+<!-- ================= NAVBAR ================= -->
 <header class="navbar">
     <h2 class="title">Live Election Results</h2>
     <a href="/dashboard" class="back-btn">Back</a>
 </header>
 
+
+<!-- ================= MAIN CONTENT ================= -->
 <main class="container">
 
-    <div class="winner-box" id="winnerBox">
+    <!-- WINNER BOX -->
+    <div class="winner-box">
         <h2 id="winnerText">Winner: —</h2>
         <p class="note">Results update every 5 seconds from the blockchain</p>
     </div>
 
+
+    <!-- RESULTS GRID -->
     <div class="results-grid">
+
+        <!-- Candidate 1 -->
         <div class="result-card" id="card1">
             <img src="{{ url_for('static', filename='images/cand1.jpg') }}" class="cand-img">
             <h3>Candidate One</h3>
@@ -30,6 +38,7 @@
             <p class="votes">Votes: <span id="v1">0</span></p>
         </div>
 
+        <!-- Candidate 2 -->
         <div class="result-card" id="card2">
             <img src="{{ url_for('static', filename='images/cand2.jpg') }}" class="cand-img">
             <h3>Candidate Two</h3>
@@ -37,23 +46,31 @@
             <p class="votes">Votes: <span id="v2">0</span></p>
         </div>
 
+        <!-- Candidate 3 -->
         <div class="result-card" id="card3">
             <img src="{{ url_for('static', filename='images/cand3.jpg') }}" class="cand-img">
             <h3>Candidate Three</h3>
             <p class="position">Class Rep</p>
             <p class="votes">Votes: <span id="v3">0</span></p>
         </div>
+
     </div>
 
-    <canvas id="resultsChart" class="chart"></canvas>
+
+    
 
 </main>
 
-<!-- LOCAL Ethers.js -->
+
+<!-- ================= SCRIPTS ================= -->
+
+<!-- Local Ethers.js -->
 <script src="{{ url_for('static', filename='vendor/ethers.umd.min.js') }}"></script>
 
-<!-- Config + Logic -->
+<!-- Blockchain Config -->
 <script src="{{ url_for('static', filename='jss/blockchainConfig.js') }}"></script>
+
+<!-- Results Logic -->
 <script src="{{ url_for('static', filename='jss/results.js') }}"></script>
 
 </body>

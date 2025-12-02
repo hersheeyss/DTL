@@ -165,6 +165,7 @@ submitVoteBtn.addEventListener("click", async () => {
         showPopup("Transaction Error", "Something went wrong while submitting your vote.");
     }
 
+
 });
 
 
